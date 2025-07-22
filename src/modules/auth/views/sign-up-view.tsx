@@ -21,6 +21,8 @@ import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { FaGithub, FaGoogle } from "react-icons/fa"
+
 
 
 const formSchema = z.object({
@@ -186,20 +188,30 @@ export const SignUpView = () => {
                                 
                                 <div className="grid grid-cols-2 gap-4">
                                     <Button
+                                    onClick={()=>{
+                                        authClient.signIn.social({
+                                            provider: "google"
+                                        })
+                                    }}
                                     disabled={pending}
                                     variant="outline"
                                     type="button"
                                     className="w-full"
                                     >
-                                        Google
+                                        <FaGoogle />
                                     </Button>
                                     <Button
+                                    onClick={()=>{
+                                        authClient.signIn.social({
+                                            provider: "github"
+                                        })
+                                    }}
                                     disabled={pending}
                                     variant="outline"
                                     type="button"
                                     className="w-full"
                                     >
-                                        Github
+                                        <FaGithub />
                                     </Button>
                                 </div>
 
