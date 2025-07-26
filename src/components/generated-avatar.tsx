@@ -14,7 +14,7 @@ export const GeneratedAvatar = ({ seed, className, variant }: GeneraterAvatarPro
     let avatar;
 
     if(variant === "botttsNeutral"){
-        avatar = createAvatar(botttsNeutral), {seed}
+        avatar = createAvatar((botttsNeutral), {seed})
     }else{
         avatar = createAvatar(initials, {
             seed, 
