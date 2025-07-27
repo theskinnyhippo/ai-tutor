@@ -22,7 +22,6 @@ import { GeneratedAvatar } from "@/components/generated-avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Children } from "react";
 import { toast } from "sonner";
 
 interface AgentFormProps {
@@ -44,7 +43,7 @@ export const AgentForm = ({
         trpc.agents.create.mutationOptions({
             onSuccess : async () => {
                 await queryClient.invalidateQueries(
-                    trpc.agents.getMany.queryOptions()
+                    trpc.agents.getMany.queryOptions({})
                 )
 
                 if(initialValues?.id){
