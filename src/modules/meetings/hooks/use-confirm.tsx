@@ -1,6 +1,4 @@
 import { JSX, useState } from "react";
-
-
 import { Button } from "@/components/ui/button";
 import { ResponsiveDialog } from "@/components/responsive-dialog";
 
@@ -15,7 +13,13 @@ export const useConfirm = (
 
     const confirm = () => {
         return new Promise((resolve) => {
-        setPromise({resolve});
+            
+            setPromise(null);
+            setTimeout(() => {
+                setPromise({resolve})
+            }, 0)
+        
+            //setPromise({resolve});
         })
     }
 
@@ -55,7 +59,7 @@ export const useConfirm = (
                         onClick={handleConfirm}
                         className="w-full lg:w-auto"
                         >
-                        Cancel
+                        Confirm
                     </Button>
 
                 </div>
