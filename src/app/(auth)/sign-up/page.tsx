@@ -20,5 +20,3 @@ const Page = async () => {
 }
 
 export default Page;
-
-// localhost:3000/auth/sign-up
