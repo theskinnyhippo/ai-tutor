@@ -47,9 +47,9 @@ export const DashboardSidebar = () => {
     return (
         <Sidebar className="bg-amber-400">
             <SidebarHeader className=" text-sidebar-accent-foreground">
-                <Link href="/" className="flex item-center gap-2 px-2 pt-2">
-                    <Image src="logo.svg" height={36} width={36} alt="AI.Tutor"/>
-                    <p className="text-2xl font-medium">ai-tutor</p>
+                <Link href="/" className="flex item-center justify-center px-4 pt-2">
+                    <Image src="logo.svg" height={36} width={130} alt="AI.Tutor"/>
+                    {/* <p className="text-2xl font-medium">ai-tutor</p> */}
                 </Link>
             </SidebarHeader>
             <div className="px-4 p-2">
