@@ -16,7 +16,7 @@ import { Badge } from "@/components/ui/badge"
 
 
 import {format} from "date-fns"
-import { cn } from "@/lib/utils"
+import { cn, formatDuration } from "@/lib/utils"
 import {
     CircleCheckIcon,
     CircleXIcon,
@@ -26,16 +26,7 @@ import {
     LoaderIcon,
     ClockFadingIcon
 } from "lucide-react";
-import humanizeDuration from "humanize-duration"
 
-
-function formatDuration(seconds : number) {
-    return humanizeDuration(seconds*1000, {
-        largest : 1,
-        round : true,
-        units : ["h", "m", "s"],
-    })
-}
 
 const statusIconMap = {
   upcoming: ClockArrowUpIcon,
