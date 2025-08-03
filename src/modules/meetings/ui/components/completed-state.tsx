@@ -13,6 +13,8 @@ import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { formatDuration } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Transcript } from "./transcript";
+import { ChatProvider } from "./chat-provider";
 
 interface Props {
     data : MeetingGetOne
@@ -22,43 +24,45 @@ export const CompletedState = ({data} : Props ) => {
         <div className="flex flex-col gap-y-4">
             <Tabs defaultValue="summary">
                 <div className="bg-white rounded-2xl border p-3 ">
-                    <ScrollArea>
-                        <TabsList className="m-1 bg-background justify-start rounded-lg px-2 h-13">
-                            <TabsTrigger 
-                                value="summary"
-                                className="text-muted-foreground bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"                            
-                                >
-                                <BookOpenTextIcon className="size-6"/>
-                                Summary
-                            </TabsTrigger>
-                            
-                            <TabsTrigger 
-                                value="transcript"
-                                className="text-muted-foreground bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"                            
-                                >
-                                <FileTextIcon className="size-6"/>
-                                Transcript
-                            </TabsTrigger>
-                            
-                            <TabsTrigger 
-                                value="recording"
-                                className="text-muted-foreground bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"                            
-                                >
-                                <FileVideoIcon className="size-6"/>
-                                Recording
-                            </TabsTrigger>
-                            
-                            <TabsTrigger 
-                                value="chat"
-                                className="text-muted-foreground bg-background data-[state=active]:shadow-none border-b-2 border-transparent data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"                            
-                                >
-                                <SparklesIcon className="size-6"/>
-                                Ask AI
-                            </TabsTrigger>
-                            
-                        </TabsList>
-                        <Scrollbar orientation="horizontal"/>
+                    <ScrollArea className="w-full">
+                    <TabsList className="flex items-center bg-background rounded-lg px-2 h-13 min-w-max">
+                        {/* each trigger can shrink to icon-only on very small screens */}
+                        <TabsTrigger
+                        value="summary"
+                        className="flex-1 text-muted-foreground data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                        >
+                        <BookOpenTextIcon className="size-5 sm:size-6" />
+                        <span className="ml-1 hidden sm:inline">Summary</span>
+                        </TabsTrigger>
+
+                        <TabsTrigger
+                        value="transcript"
+                        className="flex-1 text-muted-foreground data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                        >
+                        <FileTextIcon className="size-5 sm:size-6" />
+                        <span className="ml-1 hidden sm:inline">Transcript</span>
+                        </TabsTrigger>
+
+                        <TabsTrigger
+                        value="recording"
+                        className="flex-1 text-muted-foreground data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                        >
+                        <FileVideoIcon className="size-5 sm:size-6" />
+                        <span className="ml-1 hidden sm:inline">Recording</span>
+                        </TabsTrigger>
+
+                        {/* <TabsTrigger
+                        value="chat"
+                        className="flex-1 text-muted-foreground data-[state=active]:border-b-primary data-[state=active]:text-accent-foreground h-full hover:text-accent-foreground"
+                        >
+                        <SparklesIcon className="size-5 sm:size-6" />
+                        <span className="ml-1 hidden sm:inline">Ask AI</span>
+                        </TabsTrigger> */}
+                    </TabsList>
+
+                    <Scrollbar orientation="horizontal" className="h-2" />
                     </ScrollArea>
+
                     <TabsContent value="recording">
                         <div className="bg-white rounded-2xl border px-4 py-5 m-5">
                             <div className="flex justify-center">
@@ -78,81 +82,66 @@ export const CompletedState = ({data} : Props ) => {
                         </div>
                     </TabsContent>
                     <TabsContent value="summary">
-                        <div className="bg-white rounded-2xl border px-4 py-5 m-5">
-                            <div className="px-4 py-5 gap-y-5 flex flex-col col-span-5">
-                                <h2 className="text-2xl font-medium capitalize">
-                                    {data.name}
-                                </h2>
-                                <div className="flex gap-x-2  items-center">
-                                    <Link
-                                        href={`/agents/${data.agent.id}`}
-                                        className="flex items-center gap-x-2 underline underline-offset-4 capitalize"
-                                    >
-                                        <GeneratedAvatar 
-                                            seed={data.agent.name}
-                                            variant="botttsNeutral"
-                                            className="sise-5"
-                                        />
-                                        {data.agent.name}
-                                    </Link>{" "}
-                                    <p>{data.startedAt ? format(data.startedAt, "PPP") : ""}</p>
-                                </div>
-                                <Badge 
-                                    variant="outline"
-                                    className="flex items-center gap-x-2 [&>svg]:size-4"
-                                >
-                                    <ClockFadingIcon className="text-blue-700" />
-                                    {data.duration ? formatDuration(data.duration) : "No duration" }
-                                </Badge>
-                                <div>
-                                    <Markdown
-                                        components={{
-                                            h1 : (props) => (
-                                                <h1 className="text-2xl font-medium mb-6" {...props} />
-                                            ),
-                                            h2 : (props) => (
-                                                <h2 className="text-xl font-medium mb-6" {...props} />
-                                            ),
-                                            h3 : (props) => (
-                                                <h3 className="text-lg font-medium mb-6" {...props} />
-                                            ),
-                                            h4 : (props) => (
-                                                <h4 className="text-base font-medium mb-6" {...props} />
-                                            ),
-                                            p : (props) => (
-                                                <p className="leading-relaxed mb-6" {...props} />
-                                            ),
-                                            ul : (props) => (
-                                                <ul className="list-disc list-inside mb-6" {...props} />
-                                            ),
-                                            ol : (props) => (
-                                                <ol className="list-decimal list-inside mb-6" {...props} />
-                                            ),
-                                            strong : (props) => (
-                                                <strong className="font-bold" {...props} />
-                                            ),
-                                            code : (props) => (
-                                                <code className="bg-gray-200 px-1 py-0.5 rounded" {...props} />
-                                            ),
-                                            blockquote : (props) => (
-                                                <blockquote className="border-l-4 pl-4 italic my-4" {...props} />
-                                            ),
-                                        }}
-                                    >
-                                        {data.summary}
-                                    </Markdown>
-                                </div>
-                            </div>
-                        </div>
-                    </TabsContent>
-                    <TabsContent value="chat">
+                    <div className="bg-white rounded-2xl border px-4 py-5 m-5">
+                        <div className="px-4 py-5 gap-y-5 flex flex-col col-span-5">
+                        <h2 className="text-2xl font-medium capitalize">
+                            {data.name}
+                        </h2>
 
-                            <div className="flex text-gray-500 justify-center p-4">
-                                this feature is not yet available
-                            </div>
-                        
+                        <div className="flex gap-x-2 items-center">
+                            <Link
+                            href={`/agents/${data.agent.id}`}
+                            className="flex items-center gap-x-2 underline underline-offset-4 capitalize"
+                            >
+                            <GeneratedAvatar 
+                                seed={data.agent.name}
+                                variant="botttsNeutral"
+                                className="sise-5"
+                            />
+                            {data.agent.name}
+                            </Link>
+                            <p>{data.startedAt ? format(data.startedAt, "PPP") : ""}</p>
+                        </div>
+
+                        <Badge 
+                            variant="outline"
+                            className="flex items-center gap-x-2 [&>svg]:size-4"
+                        >
+                            <ClockFadingIcon className="text-blue-700" />
+                            {data.duration ? formatDuration(data.duration) : "No duration" }
+                        </Badge>
+
+                        {/* 🔽 SCROLLABLE SUMMARY BOX */}
+                        <div className="max-h-[500px] overflow-y-auto pr-2">
+                            <Markdown
+                            components={{
+                                h1: (props) => <h1 className="text-2xl font-medium mb-6" {...props} />,
+                                h2: (props) => <h2 className="text-xl font-medium mb-6" {...props} />,
+                                h3: (props) => <h3 className="text-lg font-medium mb-6" {...props} />,
+                                h4: (props) => <h4 className="text-base font-medium mb-6" {...props} />,
+                                p: (props) => <p className="leading-relaxed mb-6" {...props} />,
+                                ul: (props) => <ul className="list-disc list-inside mb-6" {...props} />,
+                                ol: (props) => <ol className="list-decimal list-inside mb-6" {...props} />,
+                                strong: (props) => <strong className="font-bold" {...props} />,
+                                code: (props) => <code className="bg-gray-200 px-1 py-0.5 rounded" {...props} />,
+                                blockquote: (props) => <blockquote className="border-l-4 pl-4 italic my-4" {...props} />,
+                            }}
+                            >
+                            {data.summary}
+                            </Markdown>
+                        </div>
+                        </div>
+                    </div>
                     </TabsContent>
+
+                    <TabsContent value="chat">
+                        <ChatProvider meetingid={data.id} meetingName={data.name} />
+                    </TabsContent>
+
                     <TabsContent value="transcript">
+
+                    <Transcript meetingid={data.id}/>
+
                     {data.transcriptUrl ? (
                         <a
                         href={data.transcriptUrl}
