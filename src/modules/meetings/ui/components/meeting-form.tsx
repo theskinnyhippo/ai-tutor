@@ -61,6 +61,10 @@ export const MeetingForm = ({
                     trpc.meetings.getMany.queryOptions({})
                 )
 
+                await queryClient.invalidateQueries(
+                    trpc.premium.getFreeUage.queryOptions()
+                )
+
                 if(initialValues?.id){
                     trpc.meetings.getOne.queryOptions({ id : initialValues?.id })
                 }
@@ -68,7 +72,10 @@ export const MeetingForm = ({
             },
             onError : (error) => {
                 toast.error(error.message)
-                // check if error code is FORBIDDEN, 
+                // check if error code is FORBIDDEN      
+                if(error.data?.code === "FORBIDDEN"){
+                    router.push("/upgrade");
+                }
             }
         })
     )

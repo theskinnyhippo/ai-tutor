@@ -76,7 +76,7 @@ export const SignUpView = () => {
         )
     }
     
-    console.log("Sign in view");
+    console.log("Sign up view");
     return (
         <div className="flex flex-col gap-6">
             <Card className="overflow-hidden p-0">
@@ -98,7 +98,7 @@ export const SignUpView = () => {
                                     name = "name"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Email</FormLabel>
+                                            <FormLabel>Name</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     type="text"
